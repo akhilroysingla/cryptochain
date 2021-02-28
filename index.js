@@ -14,7 +14,9 @@ const REDIS_URL = isDevelopment ?
     'redis://127.0.0.1:6379' :
     'redis://:pfe2347fe5213c2919dd31bac2074ae517fbf03a2077ce45c46920696814ec571@ec2-34-203-49-113.compute-1.amazonaws.com:29879';
 const DEFAULT_PORT = 3000;
-const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`;
+const ROOT_NODE_ADDRESS = isDevelopment ?
+    `http://localhost:${DEFAULT_PORT}` :
+    'https://intense-falls-00269.herokuapp.com';
     
 const app = express();
 const blockchain = new Blockchain();
