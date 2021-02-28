@@ -14,9 +14,7 @@ const REDIS_URL = isDevelopment ?
     'redis://127.0.0.1:6379' :
     'redis://:pfe2347fe5213c2919dd31bac2074ae517fbf03a2077ce45c46920696814ec571@ec2-34-203-49-113.compute-1.amazonaws.com:29879';
 const DEFAULT_PORT = 3000;
-const ROOT_NODE_ADDRESS = isDevelopment ?
-    `http://localhost:${DEFAULT_PORT}` :
-    'https://intense-falls-00269.herokuapp.com';
+const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`;
     
 const app = express();
 const blockchain = new Blockchain();
@@ -92,6 +90,20 @@ app.get('/api/wallet-info', (req, res) => {
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './client/dist/index.html'));
+});
+
+app.get('/api/known-addresses', (req, res) => {
+    const addressMap = {};
+
+    for (let block of blockchain.data) {
+        for (let transaction of blockchain.data) {
+            const recipient = Object.keys(transaction.outputMap);
+
+            recipient.forEach(recipient => addressMap[recipient] = recipient);
+        }
+    }
+
+    res.json(Object.keys(addressMap));
 });
 
 const syncWithRootState = () => {
